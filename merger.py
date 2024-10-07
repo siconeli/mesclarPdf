@@ -59,10 +59,16 @@ if opcao == "1":
 
     files_list = os.listdir()
 
+    while len(files_list) == 0:
+        files_list = os.listdir()
+        sleep(2)
+        print("\nADICIONE ARQUIVOS NO DIRETÓRIO...")
+
     if len(files_list) > 0:
         file_name = input("\nINFORME O NOME DO ARQUIVO FINAL: ")
 
         if mesclarPdf(files_list, file_name):
+            diretorio = "C:\merger"
             print("\n------------------------------------------------------------------")
             print("- ARQUIVO MESCLADO COM SUCESSO")
             print(f"\n- DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
@@ -70,17 +76,8 @@ if opcao == "1":
             print("------------------------------------------------------------------")
             sleep(10)
             exit()
-    else:
-        print("------------------------------------------------------------------")
-        print("\n- O DIRETÓRIO INFORMADO ESTÁ VAZIO")
-        print("\n- EXECUTE O BOT NOVAMENTE")
-        print("\n- ESTE TERMINAL SERÁ FECHADO AUTOMATICAMENTE EM 10 SEGUNDOS...")
-        print("------------------------------------------------------------------")
-        sleep(10)
-        exit()
 
-
-    # RODANDO COM DIRETÓRIO FIXO NO C:/
+# RODANDO COM DIRETÓRIO FIXO NO C:/
 if opcao == "2":
     while True:
         c_dir = "C:/"
