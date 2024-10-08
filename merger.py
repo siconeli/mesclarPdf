@@ -1,27 +1,28 @@
 import fitz # biblioteca PyMuPDF -> para mesclar arquivos pdf
 import os
 from time import sleep
-import subprocess
+from docx2pdf import convert # biblioteca docx2pdf -> pip install docx2pdf -> converte docx para pdf
 
-# Biblioteca para converter arquivos docx para pdf ->  pip install rocketpdf -> Não precisa importar a biblioteca pois é executado por linha de comando
-
+# Obrigatório ter o Microsoft Word instalado no computador hospedeiro
 def converterDocx(files_list):
     for file in files_list:
         try:
             if ".docx" in file: #.doc
-                output_pdf = file.replace(".docx", ".pdf")
-                command = ["rocketpdf", "parsedoc", file, "--output", output_pdf]
-
                 try:
-                    subprocess.run(command)
-                    print(f"(RETORNO: ARQUIVO CONVERTIDO COM SUCESSO ->  {output_pdf}")
-                except subprocess.CalledProcessError as e:
-                    print(f"(ERRO): ERRO AO EXECUTAR O COMANDO DE CONVERSÃO -> {e.stderr.decode()}")
+                    print(f"(RETORNO): CONVERTENDO O ARQUIVO -> {file}")  
+                    final_file = file.replace(".docx", "")
+                    convert(file, f"{final_file}.pdf")
+                except Exception as e:
+                    print(f"(ERRO): ERRO NA CONVERSÃO DO ARQUIVO DOCX -> {e}")
         except:
             print(f"\n(ERRO): ERRO NA CONVERSÃO DOS ARQUIVOS WORD PARA PDF!")
 
-def mesclarPdf(files_list, file_name):
+def mesclarPdf(files_list, file_name, diretorio):
     try:
+        diretorio_final = "DOCSMERGER"
+        if not os.path.exists(diretorio_final):
+            os.mkdir(diretorio_final)
+
         merger = fitz.open()
 
         for file in files_list:
@@ -30,15 +31,17 @@ def mesclarPdf(files_list, file_name):
                 merger.insert_pdf(pdf_atual)
                 pdf_atual.close()
 
-        merger.save(f"{file_name}.PDF")
+        merger.save(f"{diretorio}\{diretorio_final}\{file_name}.PDF")
         merger.close()
 
         return True
 
     except:
-        print("\n(ERRO): ERRO NA MESCLAGEM DOS ARQUIVOS! VERIFIQUE OS ARQUIVOS E TENTE NOVAMENTE")
+        print("\n(ERRO): ERRO NA MESCLAGEM DOS ARQUIVOS, VERIFIQUE OS ARQUIVOS E TENTE NOVAMENTE!")
 
-print("### BEM-VINDO AO MERGER ###\n\n### O MERGER TEM A FUNÇÃO DE MESCLAR ARQUIVOS PDF LOCALMENTE ###\n\n### ESCOLHA AS OPÇÕES DISPONÍVEIS NO MENU ###")
+print("### BEM-VINDO AO MERGER ###")
+print("\n### O MERGER TEM A FUNÇÃO DE CONVERTER ARQUIVOS DOCX PARA PDF, EM SEGUIDA MESCLAR E GERAR UN ÚNICO ARQUIVO ###")
+print("\n### ESCOLHA AS OPÇÕES DISPONÍVEIS NO MENU ###")
 
 encerrar = "0"
 
@@ -170,19 +173,28 @@ while encerrar != "3":
             print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
 
         if len(files_list) > 0:
-            print("\n(RETORNO): CONVERTENDO ARQUIVO PDF PARA WORD...")
+            validation = False
 
-            converterDocx(files_list)
+            # APLICAR LÓGICA PARA VERIFICAR SE EXISTE ARQUIVO WORD NA PASTA!
+            for file in files_list:
+                if ".docx" in file:
+                    validation = True       
+
+            if validation:
+                print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
+                converterDocx(files_list)
 
             file_name = input("\n(MERGER): INFORME O NOME DO ARQUIVO FINAL: ")
 
             print("\n(RETORNO): MESCLANDO ARQUIVOS...")
 
-            if mesclarPdf(files_list, file_name):
-                diretorio = "C:\MERGER"
+            files_list = os.listdir()
+
+            diretorio = "C:\MERGER"
+            if mesclarPdf(files_list, file_name, diretorio):
                 print("\n------------------------------------------------------------------")
                 print("(RETORNO): ARQUIVO MESCLADO COM SUCESSO")
-                print(f"\n(RETORNO): DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
+                print(f"\n(RETORNO): DISPONÍVEL NO DIRETÓRIO -> {diretorio}\DOCSMERGER")
                 print("\n(RETORNO): ABRINDO DIRETÓRIO...")
                 sleep(2)
                 os.startfile("C:\MERGER")
