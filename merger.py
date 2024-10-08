@@ -18,78 +18,82 @@ def mesclarPdf(files_list, file_name):
         return True
 
     except:
-        print("ERRO NA MESCLAGEM DOS ARQUIVOS!")
+        print("MENSAGEM: ERRO NA MESCLAGEM DOS ARQUIVOS!")
 
-print("### BEM VINDO ###\n\n### APLICAÇÃO COM FUNÇÃO DE MESCLAR ARQUIVOS PDF LOCALMENTE ###")
+print("### BEM VINDO ###\n\n### O MERGER TEM A FUNÇÃO DE MESCLAR ARQUIVOS PDF LOCALMENTE ###")
 
-continuar = "S"
+encerrar = "0"
 
-while continuar == "S":
-    print("\n-> OPÇÕES DE DIRETÓRIO: ")
+while encerrar != "3":
+    print("\nMENU - OPÇÕES DE DIRETÓRIO: ")
     print("1 - INFORMAR O CAMINHO DO DIRETÓRIO")
-    print("2 - INSERIR OS ARQUIVOS NO DIRETÓRIO 'MERGER' CRIADO AUTOMATICAMENTE NO DISCO C:/")
+    print("2 - INSERIR ARQUIVOS NO DIRETÓRIO 'MERGER' CRIADO AUTOMATICAMENTE NO DISCO C:/")
+    print("3 - ENCERRAR MERGER")
 
-    opcao = input("INFORME A OPÇÃO (1) OU (2): ")
+    opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2) OU (3): ")
 
-    while opcao not in ["1", "2"]:
-        print("\nOPÇÃO INVÁLIDA!\n")
-        print("-> OPÇÕES DE DIRETÓRIO: ")
+    if opcao == "3":    
+        print("\n(RETORNO): ENCERRANDO O MERGER...")
+        sleep(3)
+        exit()
+
+    while opcao not in ["1", "2", "3"]:
+        print("\n(RETORNO): OPÇÃO INVÁLIDA!")
+        print("\nMENU - OPÇÕES DE DIRETÓRIO: ")
         print("1 - INFORMAR O CAMINHO DO DIRETÓRIO")
-        print("2 - INSERIR OS ARQUIVOS NO DIRETÓRIO 'MERGER' CRIADO AUTOMATICAMENTE NO DISCO C:/ \n")
-        opcao = input("INFORME A OPÇÃO (1) OU (2): ")
+        print("2 - INSERIR OS ARQUIVOS NO DIRETÓRIO 'MERGER' CRIADO AUTOMATICAMENTE NO DISCO C:/")
+        print("3 - ENCERRAR MERGER")
+        opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2) OU (3): ")
+        
+        if opcao == "3":    
+            print("\n(RETORNO): ENCERRANDO O MERGER...")
+            sleep(3)
+            exit()
+
 
     # RODANDO COM DIRETÓRIO INFORMADO PELO USUÁRIO
     if opcao == "1":
-        diretorio = input("\nINFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+        diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
         while True:
             try:
                 os.chdir(diretorio)
-                print("- DIRETÓRIO LOCALIZADO COM SUCESSO")
+                print("\n(RETORNO): DIRETÓRIO LOCALIZADO COM SUCESSO")
                 break
 
             except FileNotFoundError:
-                print("ERRO: O DIRETÓRIO INFORMADO NÃO FOI ENCONTRADO")
-                diretorio = input("\nINFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+                print("\n(ERRO): O DIRETÓRIO INFORMADO NÃO FOI ENCONTRADO")
+                diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
             except NotADirectoryError:
-                print("ERRO: O CAMINHO INFORMADO NÃO É UM DIRETÓRIO VÁLIDO")
-                diretorio = input("\nINFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+                print("\n(ERRO): O CAMINHO INFORMADO NÃO É UM DIRETÓRIO VÁLIDO")
+                diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
             except PermissionError:
-                print("ERRO: PERMISSÃO NEGADA PARA ACESSAR ESSE DIRETÓRIO")
-                diretorio = input("\nINFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+                print("\n(ERRO): PERMISSÃO NEGADA PARA ACESSAR ESSE DIRETÓRIO")
+                diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
         files_list = os.listdir()
 
         while len(files_list) == 0:
             files_list = os.listdir()
             sleep(2)
-            print("\nADICIONE ARQUIVOS NO DIRETÓRIO...")
+            print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
 
         if len(files_list) > 0:
-            file_name = input("\nINFORME O NOME DO ARQUIVO FINAL: ")
+            file_name = input("\n(MERGER): INFORME O NOME DO ARQUIVO FINAL: ")
+
+            print("\n(RETORNO): MESCLANDO ARQUIVOS...")
 
             if mesclarPdf(files_list, file_name):
-                diretorio = "C:\merger"
                 print("\n------------------------------------------------------------------")
-                print("- ARQUIVO MESCLADO COM SUCESSO")
-                print(f"\n- DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
-                # print("\n- ESTE TERMINAL SERÁ FECHADO AUTOMATICAMENTE EM 10 SEGUNDOS...")
-                # print("------------------------------------------------------------------")
-                # sleep(10)
-                # exit()
-        
-        continuar = input("\nDESEJA MESCLAR MAIS ARQUIVOS? (S) OU (N): ")
-        continuar = continuar.upper()
-
-        while continuar not in ["S", "N"]:
-            continuar = input("DESEJA MESCLAR MAIS ARQUIVOS? (S) OU (N): ")
-
-        if continuar == "N":
-            print("ENCERRANDO A APLICAÇÃO...")
-            sleep(2)
-            exit()
+                print("(RETORNO): ARQUIVO MESCLADO COM SUCESSO")
+                print(f"\n(RETORNO): DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
+                print("\n(RETORNO): ABRINDO DIRETÓRIO...")
+                sleep(2)
+                os.startfile(diretorio)
+                sleep(2)
+                print("------------------------------------------------------------------")
 
     # RODANDO COM DIRETÓRIO FIXO NO C:/
     if opcao == "2":
@@ -101,17 +105,17 @@ while continuar == "S":
                 break
 
             except FileNotFoundError:
-                print(f"ERRO: O DIRETÓRIO NÃO FOI ENCONTRADO -> {c_dir}")
+                print(f"\n(ERRO): O DIRETÓRIO NÃO FOI ENCONTRADO -> {c_dir}")
                 sleep(10)
                 exit()
 
             except NotADirectoryError:
-                print(f"ERRO: O CAMINHO INFORMADO NÃO É UM DIRETÓRIO VÁLIDO -> {c_dir}")
+                print(f"\n(ERRO): O CAMINHO INFORMADO NÃO É UM DIRETÓRIO VÁLIDO -> {c_dir}")
                 sleep(10)
                 exit()
 
             except PermissionError:
-                print(f"ERRO: PERMISSÃO NEGADA PARA ACESSAR ESSE DIRETÓRIO -> {c_dir}")
+                print(f"\n(ERRO): PERMISSÃO NEGADA PARA ACESSAR ESSE DIRETÓRIO -> {c_dir}")
                 sleep(10)
                 exit()
 
@@ -119,31 +123,32 @@ while continuar == "S":
             os.chdir("merger")
         else:
             os.mkdir("merger")
-            print("- DIRETÓRIO MERGER CRIADO COM SUCESSO!")
+            os.chdir("merger")
+            print("\n(RETORNO): DIRETÓRIO MERGER CRIADO COM SUCESSO!")
+            print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
+            sleep(2)
+            os.startfile("C:\merger")
+            
 
         files_list = os.listdir()
 
         while len(files_list) == 0:
             files_list = os.listdir()
             sleep(2)
-            print("\nADICIONE ARQUIVOS NO DIRETÓRIO...")
+            print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
 
         if len(files_list) > 0:
-            file_name = input("\nINFORME O NOME DO ARQUIVO FINAL: ")
+            file_name = input("\n(MERGER): INFORME O NOME DO ARQUIVO FINAL: ")
+
+            print("\n(RETORNO): MESCLANDO ARQUIVOS...")
 
             if mesclarPdf(files_list, file_name):
                 diretorio = "C:\merger"
                 print("\n------------------------------------------------------------------")
-                print("- ARQUIVO MESCLADO COM SUCESSO")
-                print(f"\n- DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
-                # print("\n- ESTE TERMINAL SERÁ FECHADO AUTOMATICAMENTE EM 10 SEGUNDOS...")
-                # print("------------------------------------------------------------------")
-                # sleep(10)
-                # exit()
-
-continuar = input("\nDESEJA MESCLAR MAIS ARQUIVOS? (S) OU (N): ")
-continuar = continuar.upper()
-
-while continuar not in ["S", "N"]:
-    continuar = input("DESEJA MESCLAR MAIS ARQUIVOS? (S) OU (N): ")
+                print("(RETORNO): ARQUIVO MESCLADO COM SUCESSO")
+                print(f"\n(RETORNO): DISPONÍVEL NO DIRETÓRIO -> {diretorio}")
+                print("\n(RETORNO): ABRINDO DIRETÓRIO...")
+                sleep(2)
+                os.startfile("C:\merger")
+                print("------------------------------------------------------------------")
 
