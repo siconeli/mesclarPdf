@@ -1,5 +1,5 @@
 # Merger
-Ao executar o arquivo merge.exe no diretório "mesclarPdf/dist/mergea" a aplicação é aberta no terminal, onde o usuário interage informando a opção desejada para que a funcionalidade seja realizada.
+Ao executar o arquivo merge.exe no diretório "mesclarPdf/dist/merger" a aplicação é aberta no terminal, onde o usuário interage informando a opção desejada para que a funcionalidade seja realizada.
 
 ## Funcionalidades
 
