@@ -79,7 +79,7 @@
  [],
  False,
  False,
- 1728408524,
+ 1728412765,
  [('run.exe',
    'C:\\Development\\Workspace\\MesclarPdfPython\\env\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],
