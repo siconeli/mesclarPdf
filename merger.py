@@ -2,6 +2,9 @@ import fitz # biblioteca PyMuPDF -> para mesclar arquivos pdf
 import os
 from time import sleep
 from docx2pdf import convert # biblioteca docx2pdf -> pip install docx2pdf -> converte docx para pdf
+import psutil # biblioteca psutil -> pip install psutil -> utilizada para fechar a janela do explorer do windows
+# Usando o pyinstaller -> para criar o file.exe da aplicação -> Comand: pyinstaller "nome da aplicação .py"
+
 
 # Obrigatório ter o Microsoft Word instalado no computador hospedeiro
 def converterDocx(files_list):
@@ -35,8 +38,13 @@ def mesclarPdf(files_list, file_name, diretorio):
         merger.close()
 
         return True
-    except:
-        print("\n(ERRO): ERRO NA MESCLAGEM DOS ARQUIVOS, VERIFIQUE OS ARQUIVOS E TENTE NOVAMENTE!")
+    except Exception as e:
+        print(f"\n(ERRO): ERRO NA MESCLAGEM DOS ARQUIVOS -> {e}")
+
+def fechar_diretorios_explorer():
+    for proc in psutil.process_iter(['pid', 'name']):
+        if proc.info['name'] == 'explorer.exe':
+            proc.kill() 
 
 print("### BEM-VINDO AO MERGER ###")
 print("\n### O MERGER TEM A FUNÇÃO DE CONVERTER ARQUIVOS DOCX PARA PDF, EM SEGUIDA MESCLAR E GERAR UN ÚNICO ARQUIVO ###")
@@ -115,6 +123,15 @@ while encerrar != "3":
             if validation:
                 print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
                 converterDocx(files_list)
+            
+            fechar_diretorios_explorer()
+            
+            os.startfile(diretorio)
+
+            os.chdir(diretorio)
+            
+            files_list = os.listdir()
+            files_list.sort()
 
             file_name = input("\n(MERGER): INFORME O NOME DO ARQUIVO FINAL: ")
             file_name = file_name.upper()
@@ -188,12 +205,20 @@ while encerrar != "3":
                 print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
                 converterDocx(files_list)
 
+            fechar_diretorios_explorer()
+            
+            os.startfile("C:\MERGER")
+            
+            os.chdir("C:\MERGER")
+            
+            files_list = os.listdir()
+
+            files_list.sort()
+
             file_name = input("\n(MERGER): INFORME O NOME DO ARQUIVO FINAL: ")
             file_name = file_name.upper()
 
             print("\n(RETORNO): MESCLANDO ARQUIVOS...")
-
-            files_list = os.listdir()
 
             diretorio = "C:\MERGER"
             if mesclarPdf(files_list, file_name, diretorio):
