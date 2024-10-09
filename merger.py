@@ -73,35 +73,34 @@ def comprimirPdf(input_pdf, output_pdf, quality="screen"):
         exit()
 
 print("### BEM-VINDO AO MERGER ###")
-print("\n### OPÇÃO 1 - CONVERTE ARQUIVOS DOCX PARA PDF E MESCLA TODOS OS ARQUIVOS EM UM ÚNICO PDF ###")
-print("\n### OPÇÃO 2 - CONVERTER ARQUIVOS DOCX PARA PDF ###")
-print("\n### OPÇÃO 3 - ENCERRA A APLICAÇÃO ###")
-print("\n### ESCOLHA A FUNCIONALIDADE DESEJADA DE ACORDO COM O NÚMERO ###")
+print("\n### ESCOLHA A FUNCIONALIDADE DESEJADA DE ACORDO COM OS NÚMERO DO MENU###")
 
 encerrar = "0"
 
-while encerrar != "3":
+while encerrar != "4":
     print("\n[ MENU ] ")
     print("1 - MESCLAR ARQUIVOS PDF")
     print("2 - CONVERTER ARQUIVOS DOCX PARA PDF")
-    print("3 - ENCERRAR MERGER")
+    print("3 - COMPRIMIR ARQUIVOS")
+    print("4 - ENCERRAR MERGER")
 
-    opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2) OU (3): ")
+    opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2), (3) OU (4): ")
 
-    if opcao == "3":    
+    if opcao == "4":    
         print("\n(RETORNO): ENCERRANDO O MERGER...")
         sleep(2)
         exit()
 
-    while opcao not in ["1", "2", "3"]:
+    while opcao not in ["1", "2", "3", "4"]:
         print("\n(RETORNO): OPÇÃO INVÁLIDA!")
         print("\n[ MENU ] ")
         print("1 - MESCLAR ARQUIVOS PDF")
         print("2 - CONVERTER ARQUIVOS DOCX PARA PDF")
-        print("3 - ENCERRAR MERGER")
-        opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2) OU (3): ")
+        print("3 - COMPRIMIR ARQUIVOS")
+        print("4 - ENCERRAR MERGER")
+        opcao = input("\n(MERGER): INFORME A OPÇÃO (1), (2), (3) OU (4): ")
         
-        if opcao == "3":    
+        if opcao == "4":    
             print("\n(RETORNO): ENCERRANDO O MERGER...")
             sleep(2)
             exit()
@@ -290,9 +289,67 @@ while encerrar != "3":
                     os.startfile(arquivos_convertidos)
 
 
+    if opcao == "3":
+            diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
+            while True:
+                try:
+                    os.chdir(diretorio)
+                    print("\n(RETORNO): DIRETÓRIO LOCALIZADO COM SUCESSO")
+                    break
 
+                except FileNotFoundError:
+                    print("\n(ERRO): O DIRETÓRIO INFORMADO NÃO FOI ENCONTRADO")
+                    diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
+                except NotADirectoryError:
+                    print("\n(ERRO): O CAMINHO INFORMADO NÃO É UM DIRETÓRIO VÁLIDO")
+                    diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+
+                except PermissionError:
+                    print("\n(ERRO): PERMISSÃO NEGADA PARA ACESSAR ESSE DIRETÓRIO")
+                    diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
+
+            files_list = os.listdir()
+
+            if len(files_list) == 0:
+                print("\n(RETORNO): DIRETÓRIO VAZIO...")
+                print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
+                sleep(2)
+                os.startfile(diretorio)
+
+            while len(files_list) == 0:
+                files_list = os.listdir()
+                sleep(2)
+                print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
+
+            if not os.path.exists("ArquivoComprimido"):
+                os.mkdir("ArquivoComprimido")
+
+            origem = os.getcwd()
+            arquivo_comprimido = os.path.join(origem, "ArquivoComprimido")
+
+            for file in files_list:
+                if ".pdf" in file:
+                    caminho_origem = os.path.join(origem, file)
+                    caminho_destino = os.path.join(arquivo_comprimido, file)
+
+                    if os.path.isfile(caminho_origem):
+                        shutil.copy2(caminho_origem, caminho_destino)
+
+                    os.chdir(arquivo_comprimido)
+
+                    print("\n(RETORNO): COMPRIMINDO ARQUIVO...\n")
+
+                    output_file = f"c.{file}"
+                    if comprimirPdf(file, output_file, quality="screen"):
+                        os.remove(file)
+
+            print("\n(RETORNO): ARQUIVO COMPRIMIDO COM SUCESSO")
+            print(f"\n(RETORNO): DISPONÍVEL NO DIRETÓRIO -> {arquivo_comprimido}")
+            sleep(2)
+            os.startfile(arquivo_comprimido)
+            sleep(2)
 
 
 
