@@ -5,8 +5,6 @@ from docx2pdf import convert # biblioteca docx2pdf -> pip install docx2pdf -> co
 import psutil # biblioteca psutil -> pip install psutil -> utilizada para fechar a janela do explorer do windows
 # Usando o pyinstaller -> para criar o file.exe da aplicação -> Comand: pyinstaller "nome da aplicação .py"
 
-
-# Obrigatório ter o Microsoft Word instalado no computador hospedeiro
 def converterDocx(files_list):
     for file in files_list:
         try:
@@ -41,11 +39,6 @@ def mesclarPdf(files_list, file_name, diretorio):
     except Exception as e:
         print(f"\n(ERRO): ERRO NA MESCLAGEM DOS ARQUIVOS -> {e}")
 
-def fechar_diretorios_explorer():
-    for proc in psutil.process_iter(['pid', 'name']):
-        if proc.info['name'] == 'explorer.exe':
-            proc.kill() 
-
 print("### BEM-VINDO AO MERGER ###")
 print("\n### PRIMEIRO O MERGER CONVERTE ARQUIVOS DOCX PARA PDF ###")
 print("\n### EM SEGUIDA MESCLA TODOS OS ARQUIVOS PDF, GERANDO UM ÚNICO ARQUIVO DENTRO DO DIRETÓRIO [DOCSMERGER] ###")
@@ -79,8 +72,6 @@ while encerrar != "3":
             sleep(2)
             exit()
 
-
-    # RODANDO COM DIRETÓRIO INFORMADO PELO USUÁRIO
     if opcao == "1":
         diretorio = input("\n(MERGER): INFORME O CAMINHO COMPLETO DO DIRETÓRIO: ")
 
@@ -125,9 +116,7 @@ while encerrar != "3":
                 print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
                 converterDocx(files_list)
             
-            fechar_diretorios_explorer()
-            
-            os.startfile(diretorio)
+            os.chdir("C:/")
 
             os.chdir(diretorio)
             
@@ -148,7 +137,6 @@ while encerrar != "3":
                 sleep(2)
                 print("------------------------------------------------------------------")
 
-    # RODANDO COM DIRETÓRIO FIXO NO C:/
     if opcao == "2":
         while True:
             c_dir = "C:/"
@@ -174,6 +162,7 @@ while encerrar != "3":
 
         if(os.path.isdir("MERGER")):
             os.chdir("MERGER")
+            os.startfile("C:\MERGER")
             files_list = os.listdir()
 
             if len(files_list) == 0:
@@ -181,6 +170,10 @@ while encerrar != "3":
                 print("\n(RETORNO): ADICIONE ARQUIVOS NO DIRETÓRIO...")
                 sleep(2)
                 os.startfile("C:\MERGER")
+            else:
+                # print("JÁ ADICINOU ARQUIVOS NO DIRETÓRIO? APERTE 'ENTER' PARA INICIAR A MESCLAGEM")
+                enter = bool(input("\n(MERGER): SEU DIRETÓRIO MERGER JÁ POSSUI ARQUIVOS, ATUALIZE OU APERTE 'ENTER' PARA INICIAR A MESCLAGEM"))
+
         else:
             os.mkdir("MERGER")
             os.chdir("MERGER")
@@ -206,10 +199,8 @@ while encerrar != "3":
                 print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
                 converterDocx(files_list)
 
-            fechar_diretorios_explorer()
-            
-            os.startfile("C:\MERGER")
-            
+            os.chdir("C:/")
+
             os.chdir("C:\MERGER")
             
             files_list = os.listdir()
