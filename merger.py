@@ -2,7 +2,6 @@ import fitz # biblioteca PyMuPDF -> para mesclar arquivos pdf
 import os
 from time import sleep
 from docx2pdf import convert # biblioteca docx2pdf -> pip install docx2pdf -> converte docx para pdf
-import psutil # biblioteca psutil -> pip install psutil -> utilizada para fechar a janela do explorer do windows
 # Usando o pyinstaller -> para criar o file.exe da aplicação -> Comand: pyinstaller "nome da aplicação .py"
 
 def converterDocx(files_list):
