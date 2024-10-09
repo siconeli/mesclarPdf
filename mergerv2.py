@@ -109,8 +109,6 @@ while encerrar != "3":
 
         if not os.path.exists("ArquivoMesclado"):
             os.mkdir("ArquivoMesclado")
-            print("Diretório criado com sucesso!")
-
 
         origem = os.getcwd()
         arquivos_mesclados = os.path.join(origem, "ArquivoMesclado")
@@ -219,7 +217,7 @@ while encerrar != "3":
                 print("\n(RETORNO): CONVERTENDO ARQUIVOS WORD PARA PDF...\n")
                 converterDocx(files_list)
 
-        os.chdir(arquivos_convertidos)
+        os.startfile(arquivos_convertidos)
 
 
 
